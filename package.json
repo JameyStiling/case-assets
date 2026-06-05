@@ -1,6 +1,6 @@
 {
   "name": "case-art-organizer",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Secure desktop utility for copying art assets and generating previews from PSD and AI files.",
   "main": "electron/main.js",
   "scripts": {

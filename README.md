@@ -24,8 +24,25 @@ It automates file gathering, safely handles filename conflicts, and renders inst
 
 | Platform | File to Download | How to Install |
 |----------|-----------------|----------------|
-| **macOS** | `Case Art Organizer-X.X.X-arm64.dmg` | Open the `.dmg`, drag the app to Applications |
+| **macOS** | `Case Art Organizer-X.X.X-arm64.dmg` | Open the `.dmg`, drag the app to Applications, then see [macOS first launch](#macos-first-launch-app-is-damaged) below |
 | **Windows** | `Case Art Organizer Setup X.X.X.exe` | Run the `.exe` installer and follow the prompts |
+
+### macOS first launch: "App is damaged"
+
+macOS may show **"Case Art Organizer is damaged and can't be opened"** after downloading. The app is not actually damaged — macOS Gatekeeper blocks apps that are not yet signed with an Apple Developer certificate.
+
+**To open the app:**
+
+1. Drag the app from the `.dmg` to **Applications**
+2. **Right-click** (or Control-click) the app in Applications → **Open** → **Open** again in the dialog
+
+Or run this once in Terminal after installing:
+
+```bash
+xattr -cr "/Applications/Case Art Organizer.app"
+```
+
+Then open the app normally. This only needs to be done once per install.
 
 > [!IMPORTANT]
 > Always download from the official releases page: **https://github.com/JameyStiling/case-assets/releases**

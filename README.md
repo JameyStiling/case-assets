@@ -6,17 +6,25 @@ It automates file gathering, safely handles filename conflicts, and renders inst
 
 ---
 
-## Download
+## Download the App
 
-Grab the latest installer for your platform — no Node.js, terminal, or developer setup required:
+**No coding, terminal, or developer tools needed.** Download the pre-built installer for your platform and double-click to install.
 
-| Platform | Download |
-|----------|----------|
-| **macOS** | [Case Art Organizer.dmg](https://github.com/JameyStiling/case-assets/releases/latest) |
-| **Windows** | [Case Art Organizer Setup.exe](https://github.com/JameyStiling/case-assets/releases/latest) |
+### 📥 Download Location
 
-> [!TIP]
-> Go to the [**Releases page**](https://github.com/JameyStiling/case-assets/releases) to see all versions. Each release includes pre-built installers attached as downloadable assets.
+**→ [github.com/JameyStiling/case-assets/releases](https://github.com/JameyStiling/case-assets/releases)**
+
+1. Open the link above
+2. Under the latest release, click **Assets** to expand the file list
+3. Download the installer for your OS:
+
+| Platform | File to Download | How to Install |
+|----------|-----------------|----------------|
+| **macOS** | `Case Art Organizer-X.X.X-arm64.dmg` | Open the `.dmg`, drag the app to Applications |
+| **Windows** | `Case Art Organizer Setup X.X.X.exe` | Run the `.exe` installer and follow the prompts |
+
+> [!IMPORTANT]
+> Always download from the official releases page: **https://github.com/JameyStiling/case-assets/releases**
 
 ---
 

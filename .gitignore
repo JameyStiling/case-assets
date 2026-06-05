@@ -32,3 +32,7 @@ Thumbs.db
 
 # Mock output (regenerated at runtime)
 mock_dropbox/ART_TEMP*/
+mock_dropbox/ART\ TEMP*/
+
+# Downloaded ZIP files
+downloaded.zip

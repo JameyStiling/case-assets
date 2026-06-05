@@ -17,7 +17,9 @@
     "app:dev": "npx concurrently \"npm run dev\" \"npx electron electron/main.js --dev\"",
     "app:dist": "npm run build && electron-builder",
     "app:dist:mac": "npm run build && electron-builder --mac",
-    "app:dist:win": "npm run build && electron-builder --win"
+    "app:dist:win": "npm run build && electron-builder --win",
+    "release:check": "npm run install:all && npm run build && npm run test",
+    "release": "bash scripts/release.sh"
   },
   "keywords": [],
   "author": "",

@@ -1,0 +1,29 @@
+{
+  "name": "case-art-organizer-server",
+  "version": "1.0.0",
+  "description": "Backend API for scanning files, copying assets, and generating previews.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "nodemon src/index.ts",
+    "test": "node dist/test_organizer.js && node dist/test_url.js"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^4.2.0",
+    "adm-zip": "^0.5.12",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/adm-zip": "^0.5.5",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.12",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}

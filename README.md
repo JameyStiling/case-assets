@@ -4,6 +4,10 @@
 
 It automates file gathering, safely handles filename conflicts, and renders instant `.png` previews for Photoshop (`.psd`) and Illustrator (`.ai`) files (on macOS).
 
+<p align="center">
+  <img src="docs/screenshot.png" alt="Case Art Organizer Dashboard" width="800" />
+</p>
+
 ---
 
 ## Download the App

@@ -6,6 +6,20 @@ It automates file gathering, safely handles filename conflicts, and renders inst
 
 ---
 
+## Download
+
+Grab the latest installer for your platform — no Node.js, terminal, or developer setup required:
+
+| Platform | Download |
+|----------|----------|
+| **macOS** | [Case Art Organizer.dmg](https://github.com/JameyStiling/case-assets/releases/latest) |
+| **Windows** | [Case Art Organizer Setup.exe](https://github.com/JameyStiling/case-assets/releases/latest) |
+
+> [!TIP]
+> Go to the [**Releases page**](https://github.com/JameyStiling/case-assets/releases) to see all versions. Each release includes pre-built installers attached as downloadable assets.
+
+---
+
 ## Key Features
 
 *   **Safe Copy Operations (Data Protection)**: To protect your original casework, the app executes **copy-only** operations. Your source files are never moved, renamed, or deleted.
@@ -189,3 +203,28 @@ You can build for specific operating systems using:
 
 > [!NOTE]
 > Packaging for Windows works best on a Windows machine. The app itself can then be distributed as a single, zero-dependency executable (`.exe` for Windows, `.dmg` for Mac) that clients can download and run without Node or terminal knowledge.
+
+---
+
+## Publishing a Release (Automated)
+
+This repo includes a GitHub Actions workflow (`.github/workflows/release.yml`) that **automatically builds and publishes** macOS and Windows installers whenever you push a version tag.
+
+### How to publish a new release:
+
+```bash
+# 1. Tag the current commit with a version
+git tag v1.0.0
+
+# 2. Push the tag to GitHub
+git push origin v1.0.0
+```
+
+That's it. GitHub Actions will:
+1. Build the app on both macOS and Windows runners
+2. Package `.dmg` (Mac) and `.exe` (Windows) installers
+3. Create a GitHub Release at [github.com/JameyStiling/case-assets/releases](https://github.com/JameyStiling/case-assets/releases)
+4. Attach the installers as downloadable assets
+
+> [!TIP]
+> Users can then download the app directly from the [**Releases page**](https://github.com/JameyStiling/case-assets/releases) — no Node.js, git, or terminal required.

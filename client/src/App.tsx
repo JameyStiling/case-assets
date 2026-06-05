@@ -207,6 +207,7 @@ export default function App() {
     if (line.startsWith('[COMPLETE]')) return 'console-line complete';
     if (line.startsWith('[COPY]')) return 'console-line copy';
     if (line.startsWith('[PREVIEW]')) return 'console-line preview';
+    if (line.startsWith('[EMF]')) return 'console-line preview';
     if (line.startsWith('[COLLISION]')) return 'console-line collision';
     if (line.startsWith('[WARNING]')) return 'console-line warning';
     if (line.startsWith('[AI]')) return 'console-line preview';
@@ -491,6 +492,7 @@ export default function App() {
                             let extClass = '';
                             if (ext === '.psd') extClass = 'psd';
                             if (ext === '.ai') extClass = 'ai';
+                            if (ext === '.emf' || ext === '.wmf') extClass = 'emf';
                             return (
                               <span key={ext} className={`badge-tag ${extClass}`}>
                                 {ext}: {count}

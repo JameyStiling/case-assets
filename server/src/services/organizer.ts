@@ -5,6 +5,8 @@ import { pipeline } from 'stream/promises';
 import AdmZip from 'adm-zip';
 import { generatePreview } from './preview';
 import { classifyImage } from './classifier';
+import { isPreviewable, shouldRequirePreview } from './fileTypes';
+import { generateEmfCompanion, shouldGenerateEmfCompanion } from './emf';
 
 export interface CaseFolder {
   path: string;
@@ -370,12 +372,11 @@ export async function organizeCases({
 
         const ext = path.extname(srcPath).toLowerCase();
 
-        // 1. Generate preview first if PSD/AI so we can use the preview for AI classification!
+        // 1. Generate preview first for previewable formats so we can use the preview for AI classification.
         let tempPreviewPath: string | null = null;
         let generatedPreview = false;
 
-        if (ext === '.psd' || ext === '.ai') {
-          // Check if PSD/AI to generate preview in temp directory
+        if (isPreviewable(ext)) {
           const fileTempDir = path.join(tempPreviewsDir, `preview_${processedCount}`);
           tempPreviewPath = await generatePreview(resolvedSrcPath, fileTempDir);
           generatedPreview = true;
@@ -435,8 +436,38 @@ export async function organizeCases({
 
             fs.copyFileSync(tempPreviewPath, absolutePreviewPath);
             onLog(`[PREVIEW] Preview created: "${categoryFolder ? categoryFolder + '/' : ''}${path.basename(resolvedPreviewPath)}"`);
-          } else {
+          } else if (shouldRequirePreview(ext)) {
             onLog(`[PREVIEW] Could not generate preview for "${resolvedName}"`);
+          }
+        }
+
+        // 5. Create an EMF companion for each copied .ai file when a PNG preview exists.
+        if (ext === '.ai') {
+          const emfBaseName = `${path.basename(resolvedName, ext)}.emf`;
+          let emfOutputPath = path.join(fileOutputDir, emfBaseName);
+
+          if (fs.existsSync(emfOutputPath)) {
+            const emfBase = path.basename(emfBaseName, '.emf');
+            emfOutputPath = path.join(fileOutputDir, `${emfBase}_companion.emf`);
+          }
+
+          const absoluteEmfPath = path.resolve(emfOutputPath);
+          if (!absoluteEmfPath.startsWith(fileOutputDir)) {
+            throw new Error(`Path traversal attempt blocked writing EMF file: ${path.basename(emfOutputPath)}`);
+          }
+
+          const imageSource =
+            tempPreviewPath && fs.existsSync(tempPreviewPath) ? tempPreviewPath : null;
+
+          if (imageSource) {
+            const emfPath = await generateEmfCompanion(imageSource, absoluteEmfPath);
+            if (emfPath) {
+              onLog(
+                `[EMF] Companion created for "${resolvedName}": "${categoryFolder ? categoryFolder + '/' : ''}${path.basename(emfPath)}"`
+              );
+            } else if (shouldGenerateEmfCompanion()) {
+              onLog(`[EMF] Could not create companion for "${resolvedName}"`);
+            }
           }
         }
       } catch (err: any) {

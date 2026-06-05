@@ -1,6 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { scanDirectory, organizeCases } from './services/organizer';
+import { isPreviewable, shouldRequirePreview } from './services/fileTypes';
+import { shouldGenerateEmfCompanion } from './services/emf';
 
 async function runTest() {
   const rootPath = path.resolve(__dirname, '../../mock_dropbox');
@@ -45,13 +47,18 @@ async function runTest() {
     const copiedFiles = fs.readdirSync(outputDir);
     console.log('Files copied to ART_TEMP_TEST:', copiedFiles);
 
-    // Dynamically check that for every copied .psd or .ai file, a corresponding .png preview was created.
-    const psdOrAiFiles = copiedFiles.filter(f => f.endsWith('.psd') || f.endsWith('.ai'));
+    // Dynamically check that previewable files got a PNG preview when required on this platform.
+    const previewableFiles = copiedFiles.filter((f) => isPreviewable(path.extname(f)));
     let previewVerificationPassed = true;
-    
-    console.log('Verifying previews for copied PSD/AI files:');
-    for (const file of psdOrAiFiles) {
+
+    console.log('Verifying previews for copied previewable files:');
+    for (const file of previewableFiles) {
       const ext = path.extname(file);
+      if (!shouldRequirePreview(ext)) {
+        console.log(`- ${file}: preview not required on ${process.platform}`);
+        continue;
+      }
+
       const base = path.basename(file, ext);
       const expectedPreview = `${base}.png`;
       const hasPreview = copiedFiles.includes(expectedPreview);
@@ -69,9 +76,23 @@ async function runTest() {
     console.log(`- Has Case 1 diagram.png: ${hasDiagram1}`);
     console.log(`- Has Case 2 diagram.png (collision resolved): ${hasDiagram2}`);
 
+    const aiFiles = copiedFiles.filter((f) => f.endsWith('.ai'));
+    let emfCompanionPassed = true;
+    if (shouldGenerateEmfCompanion()) {
+      console.log('Verifying EMF companions for copied .ai files:');
+      for (const aiFile of aiFiles) {
+        const expectedEmf = `${path.basename(aiFile, '.ai')}.emf`;
+        const hasEmf = copiedFiles.includes(expectedEmf);
+        console.log(`- ${aiFile} has companion "${expectedEmf}": ${hasEmf}`);
+        if (!hasEmf) {
+          emfCompanionPassed = false;
+        }
+      }
+    }
+
     const collisionPassed = hasDiagram1 && hasDiagram2;
 
-    if (previewVerificationPassed && collisionPassed && psdOrAiFiles.length > 0) {
+    if (previewVerificationPassed && collisionPassed && emfCompanionPassed && previewableFiles.length > 0) {
       console.log('\nSUCCESS: Test run checks passed!');
     } else {
       console.error('\nFAIL: Test run verification failed.');
@@ -97,18 +118,20 @@ async function runTest() {
     const fullFiles = fs.readdirSync(outputDirFull);
     console.log('Files copied to ART_TEMP_FULL:', fullFiles);
 
-    const expectedPsdPreviews = ['sketch.png', 'mockup.png'];
-    let psdPreviewsPassed = true;
-    for (const expected of expectedPsdPreviews) {
+    const expectedPreviews = copiedFiles
+      .filter((f) => shouldRequirePreview(path.extname(f)))
+      .map((f) => `${path.basename(f, path.extname(f))}.png`);
+    let previewsPassed = true;
+    for (const expected of expectedPreviews) {
       const exists = fullFiles.includes(expected);
-      console.log(`- Has PSD preview "${expected}": ${exists}`);
-      if (!exists) psdPreviewsPassed = false;
+      console.log(`- Has preview "${expected}": ${exists}`);
+      if (!exists) previewsPassed = false;
     }
 
-    if (psdPreviewsPassed) {
-      console.log('\nSUCCESS: Full run checks (including PSD previews) passed!');
+    if (previewsPassed) {
+      console.log('\nSUCCESS: Full run checks (including previews) passed!');
     } else {
-      console.error('\nFAIL: PSD previews were not generated correctly.');
+      console.error('\nFAIL: Previews were not generated correctly.');
       process.exit(1);
     }
 

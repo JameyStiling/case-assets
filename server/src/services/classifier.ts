@@ -97,6 +97,9 @@ export async function classifyImage(
     if (['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.txt', '.csv', '.rtf'].includes(ext)) {
       return 'Documents & Diagrams';
     }
+    if (['.emf', '.wmf', '.eps', '.svg', '.psd', '.ai'].includes(ext)) {
+      return 'Illustrations & Graphics';
+    }
     if (['.otf', '.ttf', '.woff', '.woff2'].includes(ext)) {
       return 'Fonts';
     }

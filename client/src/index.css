@@ -426,6 +426,12 @@ input:checked + .slider:before {
   border-color: hsl(35 100% 50% / 0.2);
 }
 
+.badge-tag.emf {
+  color: hsl(145 70% 45%);
+  background: hsl(145 70% 45% / 0.1);
+  border-color: hsl(145 70% 45% / 0.2);
+}
+
 /* Console Log Component */
 .console-card {
   flex: 1;

@@ -2,7 +2,7 @@
 
 **Case Art Organizer** is a secure, local desktop utility app designed to aggregate creative assets across case folders in your Dropbox (or local workspace) into a consolidated sorting folder (`ART TEMP`). 
 
-It automates file gathering, safely handles filename conflicts, and renders instant `.png` previews for Photoshop (`.psd`) and Illustrator (`.ai`) files (on macOS).
+It automates file gathering, safely handles filename conflicts, and renders instant `.png` previews for Photoshop (`.psd`), Illustrator (`.ai`), and Windows metafile (`.emf`, `.wmf`) files.
 
 <p align="center">
   <img src="docs/screenshot.png" alt="Case Art Organizer Dashboard" width="800" />
@@ -54,7 +54,10 @@ Then open the app normally. This only needs to be done once per install.
 *   **Safe Copy Operations (Data Protection)**: To protect your original casework, the app executes **copy-only** operations. Your source files are never moved, renamed, or deleted.
 *   **Intelligent Collision Handling**: Aggregating files from multiple folders "loose" into a single directory normally causes naming collisions. The backend automatically detects duplicate names and appends the source case folder name as a suffix (e.g. `logo_[Case_01_CarCrash].psd`), resolving subsequent increments if conflicts persist.
 *   **Cross-Platform Support**: Built to run on both macOS and Windows. Remote downloads, zip extractions, scans, and collision resolution work natively on both.
-*   **Automatic PSD & AI Previews (macOS only)**: Instantly generates high-fidelity PNG preview thumbnails of `.psd` (Photoshop) and `.ai` (Illustrator) files side-by-side with the copied assets using macOS native engines (`qlmanage` and `sips`). On Windows, the app gracefully skips preview generation while copying all source files successfully.
+*   **Automatic Previews**: Generates PNG preview thumbnails beside source files when supported:
+    *   `.psd` and `.ai` on macOS (`qlmanage` and `sips`)
+    *   `.emf` and `.wmf` on Windows (native metafile rendering), with optional ImageMagick fallback
+    *   `.emf` companion files are also created alongside each copied `.ai` file when a PNG preview is available (Windows or ImageMagick)
 *   **Secure Code Warrior Integration**: Strictly validates file paths using `path.resolve()` and `startsWith()` checks, completely blocking path traversal attacks.
 *   **Interactive Glassmorphic Dashboard**: A responsive dark interface with:
     *   Dynamic directory scanners.
@@ -141,7 +144,7 @@ Images are classified into one of these sub-folders:
 
 ## Prerequisites
 
-*   **Operating System**: macOS (10.15+) or Windows (10+). Note: macOS is required for `.psd` and `.ai` preview thumbnail rendering. On Windows, files are consolidated and renamed correctly, but preview rendering is skipped.
+*   **Operating System**: macOS (10.15+) or Windows (10+). PSD/AI previews require macOS; EMF/WMF previews require Windows (or ImageMagick where installed). All file types are copied on both platforms.
 *   **Node.js**: `v20.0.0` or higher.
 *   **npm**: `v10.0.0` or higher.
 

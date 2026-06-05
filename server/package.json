@@ -1,6 +1,6 @@
 {
   "name": "case-art-organizer-server",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Backend API for scanning files, copying assets, and generating previews.",
   "main": "dist/index.js",
   "scripts": {
